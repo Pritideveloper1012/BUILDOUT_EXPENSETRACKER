@@ -112,9 +112,9 @@ onClose();
           InputProps={{ style: { backgroundColor: "white" } }}
         >
           {categories.map((cat) => (
-            <MenuItem key={cat} value={cat}>
-    {cat}
-  </MenuItem>
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
           ))}
         </TextField>
 
