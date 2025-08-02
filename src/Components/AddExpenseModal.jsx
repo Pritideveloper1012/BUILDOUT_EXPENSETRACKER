@@ -15,7 +15,7 @@ export default function AddExpenseModal({
 }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Food");
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -45,15 +45,12 @@ export default function AddExpenseModal({
       category,
       date,
     };
-    let success = false;
     if (editExpense) {
-      success = onEditExpense(expenseData);
-    } else {
-      success = onAddExpense(expenseData);
-    }
-    if (success) {
-      onClose();
-    }
+  onEditExpense(expenseData);
+} else {
+  onAddExpense(expenseData);
+}
+onClose();
   };
 
   return (
