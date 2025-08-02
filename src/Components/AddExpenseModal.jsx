@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
-import { Box, Typography, TextField, Button, MenuItem } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import { Box, Typography, TextField, Button, MenuItem } from "@mui/material";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
-const categories = ['Food', 'Entertainment', 'Travel'];
+const categories = ["Food", "Entertainment", "Travel", "Shopping", "Other"];
 
 export default function AddExpenseModal({
   open,
@@ -13,11 +13,10 @@ export default function AddExpenseModal({
   onEditExpense,
   editExpense,
 }) {
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [date, setDate] = useState('');
-  const [error, setError] = useState('');
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     if (editExpense) {
@@ -26,22 +25,17 @@ export default function AddExpenseModal({
       setCategory(editExpense.category);
       setDate(editExpense.date);
     } else {
-      resetForm();
+      setTitle("");
+      setPrice("");
+      setCategory("");
+      setDate("");
     }
   }, [editExpense, open]);
-
-  const resetForm = () => {
-    setTitle('');
-    setPrice('');
-    setCategory('');
-    setDate('');
-    setError('');
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !price || !category || !date) {
-      setError('Please fill all required fields');
+      alert("Please fill all required fields");
       return;
     }
     const expenseData = {
@@ -59,7 +53,6 @@ export default function AddExpenseModal({
     }
     if (success) {
       onClose();
-      resetForm(); // Reset form after successful submission
     }
   };
 
@@ -68,40 +61,35 @@ export default function AddExpenseModal({
       isOpen={open}
       onRequestClose={onClose}
       style={{
-        overlay: { backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1000 },
+        overlay: { backgroundColor: "rgba(0,0,0,0.6)", zIndex: 1000 },
         content: {
-          // Make modal height responsive
-          margin: 'auto',
-          borderRadius: '50px', // Set border radius to 50px
-          padding: '20px',
-          backgroundColor: '#1f2937',
-          color: 'white',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: {
-      xs: "90%",  // small screens
-      sm: "80%",
-      md: "60%",
-      lg: "50%",  // large screens
-    },
+          maxWidth: "300px",
+          maxHeight: "400px",
+          margin: "auto",
+          borderRadius: "50px",
+          padding: "20px",
+          backgroundColor: "#3d3e3fff",
+          color: "white",
         },
       }}
-      contentLabel={editExpense ? 'Edit Expense Modal' : 'Add Expense Modal'}
+      contentLabel={editExpense ? "Edit Expense Modal" : "Add Expense Modal"}
     >
-      <Typography variant="h6" mb={2} textAlign="center">
-        {editExpense ? 'Edit Expense' : 'Add Expense'}
+      <Typography variant="h6" mb={2}>
+        {editExpense ? "Edit Expense" : "Add Expense"}
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
         <TextField
           name="title"
           label="Expense Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-         
+          fullWidth
           required
-          InputProps={{ style: { backgroundColor: 'white' } }}
+          InputProps={{ style: { backgroundColor: "white" } }}
         />
         <TextField
           name="price"
@@ -109,10 +97,10 @@ export default function AddExpenseModal({
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-       
+          fullWidth
           required
           inputProps={{ min: 1 }}
-          InputProps={{ style: { backgroundColor: 'white' } }}
+          InputProps={{ style: { backgroundColor: "white" } }}
         />
         <TextField
           select
@@ -120,16 +108,18 @@ export default function AddExpenseModal({
           label="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          
+          fullWidth
           required
-          InputProps={{ style: { backgroundColor: 'white' } }}
+          SelectProps={{ native: true }} // <-- ADD THIS LINE
+          InputProps={{ style: { backgroundColor: "white" } }}
         >
           {categories.map((cat) => (
-            <MenuItem key={cat} value={cat}>
+            <option key={cat} value={cat}>
               {cat}
-            </MenuItem>
+            </option>
           ))}
         </TextField>
+
         <TextField
           name="date"
           label="Date"
@@ -139,15 +129,27 @@ export default function AddExpenseModal({
           fullWidth
           required
           InputLabelProps={{ shrink: true }}
-          InputProps={{ style: { backgroundColor: 'white' } }}
+          InputProps={{ style: { backgroundColor: "white" } }}
         />
-        {error && <Typography color="error">{error}</Typography>} {/* Display error message */}
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, width: '100%' }}>
-          <Button variant="outlined" onClick={onClose} color="inherit" type="button">
+        <Box
+          sx={{
+            display: "flex",
+            borderRadius: "50px",
+
+            justifyContent: "flex-end",
+            gap: 1,
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={onClose}
+            color="inherit"
+            type="button"
+          >
             Cancel
           </Button>
-          <Button variant="contained" color="error" type="submit">
-            {editExpense ? 'Update Expense' : 'Add Expense'}
+          <Button variant="contained" backgroundColor="#ffa500" type="submit">
+            {editExpense ? "Update Expense" : "Add Expense"}
           </Button>
         </Box>
       </Box>

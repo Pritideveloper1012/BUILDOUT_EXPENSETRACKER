@@ -1,5 +1,15 @@
-import React from 'react';
-import { Box, Typography, IconButton, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import {
+  Box,
+  Typography,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from '@mui/material';
 import { FaPizzaSlice, FaFilm, FaPlane, FaTimes, FaPencilAlt } from 'react-icons/fa';
 
 const categoryIcons = {
@@ -9,15 +19,35 @@ const categoryIcons = {
 };
 
 export default function ExpenseList({ expenses, onDelete, onEdit }) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedExpenseId, setSelectedExpenseId] = useState(null);
+
+  const handleOpenDialog = (id) => {
+    setSelectedExpenseId(id);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedExpenseId(null);
+  };
+
+  const confirmDelete = () => {
+    if (selectedExpenseId !== null) {
+      onDelete(selectedExpenseId);
+    }
+    handleCloseDialog();
+  };
+
   return (
     <Box>
-      {/* <Typography variant="h6" fontStyle="italic" mb={2}>
-        Recent Transactions
-      </Typography> */}
+      <Typography variant="h6" fontStyle="italic" mb={2}>
+        Recent Transactions!
+      </Typography>
       <Box sx={{ bgcolor: 'white', color: 'black', borderRadius: 2, p: 2 }}>
         {expenses.length === 0 && (
-          <Typography textAlign="" color="gray">
-            No Transaction!
+          <Typography textAlign="center" color="gray">
+            No Transaction
           </Typography>
         )}
         {expenses.map((expense) => (
@@ -49,7 +79,7 @@ export default function ExpenseList({ expenses, onDelete, onEdit }) {
             <IconButton
               aria-label="delete"
               color="error"
-              onClick={() => onDelete(expense.id)}
+              onClick={() => handleOpenDialog(expense.id)}
               size="small"
             >
               <FaTimes />
@@ -65,6 +95,24 @@ export default function ExpenseList({ expenses, onDelete, onEdit }) {
           </Box>
         ))}
       </Box>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this transaction? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={confirmDelete} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

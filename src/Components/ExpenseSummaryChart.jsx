@@ -6,6 +6,8 @@ const categories = [
   { key: 'Food', color: '#8b00ff' },
   { key: 'Entertainment', color: '#f59e0b' },
   { key: 'Travel', color: '#facc15' },
+  {key:'Shopping',color:'#1c0de9ce'},
+  {key:'Other',color:'#0de940ce'}
 ];
 
 function getCategorySummary(expenses) {
@@ -23,73 +25,31 @@ function getCategorySummary(expenses) {
 
 export default function ExpenseSummaryChart({ expenses }) {
   const data = getCategorySummary(expenses);
-  const showChart = data.length > 0;
+
+  if (data.length === 0) {
+    return (
+      <Box sx={{  borderRadius: 2, p: 6, textAlign: 'center' }}>
+        <Typography color="gray">No expenses to show</Typography>
+      </Box>
+    );
+  }
 
   return (
-    <Box
-      sx={{
-        borderRadius: 2,
-        p: 2,
-        width: '100%',
-        maxWidth: '100%',
-        textAlign: 'center',
-      }}
-    >
-      {showChart ? (
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius="60%"
-              label
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={categories.find((c) => c.key === entry.name)?.color}
-                />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value) => `₹${value}`} />
-          </PieChart>
-        </ResponsiveContainer>
-      ) : (
-        <Typography color="gray" sx={{ mb: 2 }}>
-          {/* No expenses added yet. Categories will appear below. */}
-        </Typography>
-      )}
-
-      {/* Category color legend (always visible) */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          gap: 2,
-          mt: 2,
-        }}
-      >
+    <Box >
+      <ResponsiveContainer width="100%" height={150}>
+        <PieChart>
+          <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} label>
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={categories.find((c) => c.key === entry.name)?.color} />
+            ))}
+          </Pie>
+          <Tooltip formatter={(value) => `₹${value}`} />
+        </PieChart>
+      </ResponsiveContainer>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 1, flexWrap: 'wrap' }}>
         {categories.map(({ key, color }) => (
-          <Box
-            key={key}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5,
-            }}
-          >
-            <Box
-              sx={{
-                width: 12,
-                height: 12,
-                bgcolor: color,
-                borderRadius: '2px',
-              }}
-            />
+          <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Box sx={{ width: 12, height: 12,  color, borderRadius: 1 }} />
             <Typography variant="caption">{key}</Typography>
           </Box>
         ))}

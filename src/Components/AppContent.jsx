@@ -9,13 +9,11 @@ import {
   Button,
 } from '@mui/material';
 
-import WalletBalance from './WalletBalance';
 import ExpenseSummaryChart from './ExpenseSummaryChart';
 import ExpenseList from './ExpenseList';
 import AddIncomeModal from './AddIncomeModal';
 import AddExpenseModal from './AddExpenseModal';
 import ExpenseTrendsChart from './ExpenseTrendsChart';
-
 
 function AppContent() {
   const [walletBalance, setWalletBalance] = useState(() => {
@@ -88,7 +86,7 @@ function AppContent() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h1" color="white" gutterBottom fontWeight={600}>
+      <Typography variant="h4" color="white" gutterBottom fontWeight={600}>
         Expense Tracker
       </Typography>
 
@@ -103,7 +101,7 @@ function AppContent() {
         }}
       >
         <Grid container spacing={3}>
-          <Grid  item xs={12} sm={6} md={4}zz>
+          <Grid  item xs={12} sm={6} md={4}>
             <Card sx={{ color: 'white', borderRadius: 3 }}>
               <CardContent sx={{ backgroundColor: '#3b3b3b' }}>
                 <Typography variant="h6" color="success.light">
@@ -156,6 +154,7 @@ function AppContent() {
           p: 2,
           mb: 4,
           boxShadow: 4,
+          gap:6
         }}
       >
         <Grid container spacing={3}>
