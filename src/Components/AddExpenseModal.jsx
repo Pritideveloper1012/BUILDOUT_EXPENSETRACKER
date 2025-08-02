@@ -27,7 +27,7 @@ export default function AddExpenseModal({
     } else {
       setTitle("");
       setPrice("");
-      setCategory("");
+      setCategory("Food");
       setDate("");
     }
   }, [editExpense, open]);
@@ -112,9 +112,9 @@ onClose();
           InputProps={{ style: { backgroundColor: "white" } }}
         >
           {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
+            <MenuItem key={cat} value={cat}>
+    {cat}
+  </MenuItem>
           ))}
         </TextField>
 
