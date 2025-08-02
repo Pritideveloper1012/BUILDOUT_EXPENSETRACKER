@@ -17,6 +17,7 @@ export default function AddExpenseModal({
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [date, setDate] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (editExpense) {
@@ -25,17 +26,22 @@ export default function AddExpenseModal({
       setCategory(editExpense.category);
       setDate(editExpense.date);
     } else {
-      setTitle('');
-      setPrice('');
-      setCategory('');
-      setDate('');
+      resetForm();
     }
   }, [editExpense, open]);
+
+  const resetForm = () => {
+    setTitle('');
+    setPrice('');
+    setCategory('');
+    setDate('');
+    setError('');
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim() || !price || !category || !date) {
-      alert('Please fill all required fields');
+      setError('Please fill all required fields');
       return;
     }
     const expenseData = {
@@ -53,6 +59,7 @@ export default function AddExpenseModal({
     }
     if (success) {
       onClose();
+      resetForm(); // Reset form after successful submission
     }
   };
 
@@ -64,13 +71,12 @@ export default function AddExpenseModal({
         overlay: { backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1000 },
         content: {
           maxWidth: '300px',
-          maxHeight:'400px',
+          maxHeight: '400px',
           margin: 'auto',
-          borderRadius: '50px',
+          borderRadius: '20px',
           padding: '20px',
           backgroundColor: '#1f2937',
           color: 'white',
-          
         },
       }}
       contentLabel={editExpense ? 'Edit Expense Modal' : 'Add Expense Modal'}
@@ -126,10 +132,8 @@ export default function AddExpenseModal({
           InputLabelProps={{ shrink: true }}
           InputProps={{ style: { backgroundColor: 'white' } }}
         />
-        <Box sx={{ display: 'flex', 
-            borderRadius: "50px",
-
-            justifyContent: 'flex-end', gap: 1 }}>
+        {error && <Typography color="error">{error}</Typography>} {/* Display error message */}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
           <Button variant="outlined" onClick={onClose} color="inherit" type="button">
             Cancel
           </Button>
