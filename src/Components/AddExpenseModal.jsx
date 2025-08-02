@@ -110,7 +110,7 @@ export default function AddExpenseModal({
           onChange={(e) => setCategory(e.target.value)}
           fullWidth
           required
-          SelectProps={{ native: true }} // <-- ADD THIS LINE
+          data-testid="category"
           InputProps={{ style: { backgroundColor: "white" } }}
         >
           {categories.map((cat) => (
