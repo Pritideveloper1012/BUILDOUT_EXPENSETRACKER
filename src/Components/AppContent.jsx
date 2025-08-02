@@ -86,7 +86,7 @@ function AppContent() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" color="white" gutterBottom fontWeight={600}>
+      <Typography variant="h1" color="white" gutterBottom fontWeight={600}>
         Expense Tracker
       </Typography>
 
